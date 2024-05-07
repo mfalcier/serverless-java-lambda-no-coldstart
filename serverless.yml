@@ -1,0 +1,29 @@
+service: serverless-java-lambda-no-coldstart
+frameworkVersion: '3'
+
+plugins:
+  - serverless-plugin-warmup
+
+custom:
+  warmup:
+    coldStartWarmer:
+      prewarm: true
+
+provider:
+  name: aws
+  runtime: java21
+  region: eu-south-1
+  versionFunctions: false
+  memorySize: 128
+
+package:
+  artifact: build/distributions/serverless-java-lambda-no-coldstart.zip
+
+functions:
+  hello:
+    handler: com.serverless.Handler
+    snapStart: true
+    warmup:
+      coldStartWarmer:
+        enabled: true
+
